@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 import sqlite3
 import constants as c
 import assets
-
+import query
+from database import dbutils
 
 def fetch_stock_price_and_percentage(stock_id):
     res = requests.get('{base_url}{stock}'.format(base_url=c.BASE_URL, stock=stock_id), headers=c.HEADER)
@@ -56,6 +57,7 @@ if __name__ == '__main__':
     print('choose mode to execute: ')
     print('1. update_current_price')
     print('2. query_assets')
+    print('3. select table (provide table name)')
     choice = int(input())
     if choice == 1:
         print('running update...')
@@ -63,3 +65,13 @@ if __name__ == '__main__':
     elif choice == 2:
         print('querying results...')
         assets.query_assets()
+    elif choice == 3:
+        conn = dbutils.get_connection()
+        cur = conn.cursor()
+        print('tables available: ')
+        all_tables = query.show_all_tables(cur)
+        for idx, table in enumerate(all_tables):
+            print('{}. {}'.format(idx+1, table[idx+1]))
+        table_choice = int(input('choose a table: '))
+        query.query_table(cur, all_tables[table_choice-1][table_choice])
+        dbutils.close_connection(conn)
