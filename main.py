@@ -54,24 +54,32 @@ def update_current_price():
     print('done updating database')
 
 if __name__ == '__main__':
-    print('choose mode to execute: ')
-    print('1. update_current_price')
-    print('2. query_assets')
-    print('3. select table (provide table name)')
-    choice = int(input())
-    if choice == 1:
-        print('running update...')
-        update_current_price()
-    elif choice == 2:
-        print('querying results...')
-        assets.query_assets()
-    elif choice == 3:
-        conn = dbutils.get_connection()
-        cur = conn.cursor()
-        print('tables available: ')
-        all_tables = query.show_all_tables(cur)
-        for idx, table in enumerate(all_tables):
-            print('{}. {}'.format(idx+1, table[idx+1]))
-        table_choice = int(input('choose a table: '))
-        query.query_table(cur, all_tables[table_choice-1][table_choice])
-        dbutils.close_connection(conn)
+    while True :
+        print('choose mode to execute: ')
+        print('1. update_current_price')
+        print('2. query_assets')
+        print('3. select table (provide table name)')
+        print('press q to exit...')
+        choice = input()
+        if choice == '1':
+            print('running update...')
+            update_current_price()
+            input('press any key to continue...')
+        elif choice == '2':
+            print('querying results...')
+            assets.query_assets()
+            input('press any key to continue...')
+        elif choice == '3':
+            conn = dbutils.get_connection()
+            cur = conn.cursor()
+            print('tables available: ')
+            all_tables = query.show_all_tables(cur)
+            for idx, table in enumerate(all_tables):
+                print('{}. {}'.format(idx+1, table[idx+1]))
+            table_choice = int(input('choose a table: '))
+            query.query_table(cur, all_tables[table_choice-1][table_choice])
+            dbutils.close_connection(conn)
+            input('press any key to continue...')
+        elif choice == 'q':
+            print('exiting program...')
+            quit() 
