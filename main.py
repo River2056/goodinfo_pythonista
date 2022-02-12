@@ -1,6 +1,6 @@
-import assets
-import query
-import update
+from modules import assets
+from modules import query
+from modules import update
 from database import dbutils
 
 

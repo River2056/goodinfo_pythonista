@@ -1,8 +1,8 @@
 from datetime import datetime
-import utils
+from util import utils
+from modules import fetch
 import yaml
 import sqlite3
-import fetch
 import time
 
 
