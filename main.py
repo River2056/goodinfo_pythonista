@@ -3,6 +3,8 @@ from modules import query
 from modules import update
 from functions.common_functions import find_max_amount_of_buy
 from database import dbutils
+from classes.stock import Stock
+from classes.stocks import Stocks
 from classes.mode import Mode
 from classes.menus import Menus
 from classes.menu_mode import MenuMode
@@ -15,6 +17,7 @@ if __name__ == '__main__':
         MenuMode(3, 'query assets'),
         MenuMode(4, 'select data from table'),
         MenuMode(5, 'find max stock count from budget'),
+        MenuMode(6, 'calculate money spend on buy'),
         MenuMode(999, 'quit')
     ]
     menus = Menus(*options)
@@ -57,7 +60,18 @@ if __name__ == '__main__':
             budget = user_arr[0]
             find_max_amount_of_buy(budget, *user_arr[1:])
             input('press any key to continue...\n')
-            pass
+        elif choice == Mode.CALCULATE:
+            print('calculate money spent on stock amount')
+            print('input stock info for calculate:')
+            user_input = input('e.g. 0050,145.05,100;00878,19.65,1000\n')
+            arr = user_input.split(';')
+            all_stocks = []
+            for info in arr:
+                stock_info = info.split(',')
+                all_stocks.append(Stock(stock_info[0], float(stock_info[1]), int(stock_info[2])))
+            stocks = Stocks(*all_stocks)
+            print(f'total: {stocks.sum_all()}')
+            input('press any key to continue...\n')
         elif choice == Mode.QUIT:
             print('exiting program...\n')
             quit() 
